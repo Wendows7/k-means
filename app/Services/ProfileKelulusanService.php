@@ -147,27 +147,17 @@ class ProfileKelulusanService
 
     public function checkProfileKelulusan($request)
     {
-        $data =
-            [
-                'semester_5_1' => $request->semester_5[0],
-                'semester_5_2' => $request->semester_5[1],
-                'semester_6_1' => $request->semester_6[0],
-                'semester_6_2' => $request->semester_6[1],
-                'semester_7_1' => $request->semester_7[0],
-                'semester_7_2' => $request->semester_7[1],
-
-            ];
 
         $profileKelulusan = $this->profileData();
 
         $dataFinal = '';
 
             foreach ($profileKelulusan as $key => $value) {
-                if (in_array($data['semester_5_1'], $value['semester_5']) && in_array($data['semester_5_2'], $value['semester_5']) &&
-                    in_array($data['semester_6_1'], $value['semester_6']) && in_array($data['semester_6_2'], $value['semester_6']) &&
-                    in_array($data['semester_7_1'], $value['semester_7']) && in_array($data['semester_7_2'], $value['semester_7'])) {
+                if ($request->profile_kelulusan == $key) {
 
-                    $dataFinal = $key;
+                    $dataFinal = [
+                        $value
+                    ];
                 }
             }
 

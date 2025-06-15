@@ -177,7 +177,6 @@ class DashboardController extends Controller
     {
         $result = $this->profileKelulusanService->checkProfileKelulusan($request);
 
-
         return response()->json([
             'status' => $result ? 'success' : 'error',
             'profile' => $result ? $result : '',

@@ -164,10 +164,12 @@
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.getElementById('profileForm');
         const resultDiv = document.getElementById('profileResult');
+
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             resultDiv.style.display = 'none';
             resultDiv.textContent = 'Checking...';
+
             const formData = new FormData(form);
             fetch('{{route('kmeans.profile_kelulusan.check')}}', {
                 method: 'POST',
@@ -179,15 +181,47 @@
                 .then(res => res.json())
                 .then(data => {
                     resultDiv.style.display = 'block';
-                    if (data.profile) {
-                        resultDiv.innerHTML = 'Profile Kelulusan Anda Adalah: <b><i>' + data.profile + '</i></b>';
+
+                    if (data.profile && Array.isArray(data.profile) && data.profile.length > 0) {
+                        let html = '<div class="card"><div class="card-body text-dark">';
+                        html += '<h4 class="card-title text-dark">Profile Kelulusan Anda:</h4>';
+
+                        data.profile.forEach(profile => {
+                            if (profile.semester_5 && Array.isArray(profile.semester_5)) {
+                                html += '<h5 class="text-dark">Semester 5:</h5><ul class="list-group mb-3">';
+                                profile.semester_5.forEach(course => {
+                                    html += `<li class="list-group-item text-dark">${course}</li>`;
+                                });
+                                html += '</ul>';
+                            }
+
+                            if (profile.semester_6 && Array.isArray(profile.semester_6)) {
+                                html += '<h5 class="text-dark">Semester 6:</h5><ul class="list-group mb-3">';
+                                profile.semester_6.forEach(course => {
+                                    html += `<li class="list-group-item text-dark">${course}</li>`;
+                                });
+                                html += '</ul>';
+                            }
+
+                            if (profile.semester_7 && Array.isArray(profile.semester_7)) {
+                                html += '<h5 class="text-dark">Semester 7:</h5><ul class="list-group mb-3">';
+                                profile.semester_7.forEach(course => {
+                                    html += `<li class="list-group-item text-dark">${course}</li>`;
+                                });
+                                html += '</ul>';
+                            }
+                        });
+
+                        html += '</div></div>';
+                        resultDiv.innerHTML = html;
                     } else {
-                        resultDiv.innerHTML = '<b><i>No matching profile found.</i></b>';
+                        resultDiv.innerHTML = '<div class="alert alert-warning"><b><i>No matching profile found.</i></b></div>';
                     }
                 })
-                .catch(() => {
+                .catch((error) => {
+                    console.error('Error:', error);
                     resultDiv.style.display = 'block';
-                    resultDiv.innerHTML = '<b><i>Error processing request.</i></b>';
+                    resultDiv.innerHTML = '<div class="alert alert-danger"><b><i>Error processing request.</i></b></div>';
                 });
         });
     });
