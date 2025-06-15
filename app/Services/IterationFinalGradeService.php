@@ -40,17 +40,18 @@ class IterationFinalGradeService
 
     public function createProfile()
     {
-        if ($this->iterationOneGradeService->getAllGrades()->first()->cluster_1 == null)
+
+        if ($this->iterationOneGradeService->getAllGrades()->first() == null)
         {
-            $this->kmeansService->clusterGrades(4, 100, 1);
+            return redirect()->back()->with(['error' => 'Please run iteration 1 first']);
         }
-        if ($this->iterationTwoGradeService->getAllGrades()->first()->cluster_1 == null)
+        if ($this->iterationTwoGradeService->getAllGrades()->first() == null)
         {
-            $this->kmeansService->clusterGrades(4, 100, 2);
+            return redirect()->back()->with(['error' => 'Please run iteration 2 first']);
         }
-        if ($this->iterationThreeGradeService->getAllGrades()->first()->cluster_1 == null)
+        if ($this->iterationThreeGradeService->getAllGrades()->first() == null)
         {
-            $this->kmeansService->clusterGrades(4, 100, 3);
+            return redirect()->back()->with(['error' => 'Please run iteration 3 first']);
         }
 
         $this->iterationFinalGrade->truncate();
