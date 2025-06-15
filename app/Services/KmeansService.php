@@ -25,7 +25,7 @@ class KmeansService
             $grades = $this->iterationOneGradeService->getAllGrades();
             if ($grades->first() == null)
             {
-                return  redirect()->back()->with(['error' => 'Please import data first']);
+                return  false;
             }
             $data = $grades->mapWithKeys(function ($grade) {
                 return [
@@ -71,7 +71,7 @@ class KmeansService
             $grades = $this->iterationTwoGradeService->getAllGrades();
             if ($grades->first() == null)
             {
-                return  redirect()->back()->with(['error' => 'Please import data first']);
+                return  false;
             }
             $data = $grades->mapWithKeys(function ($grade) {
                 return [
@@ -127,7 +127,7 @@ class KmeansService
             $grades = $this->iterationThreeGradeService->getAllGrades();
             if ($grades->first() == null)
             {
-                return  redirect()->back()->with(['error' => 'Please import data first']);
+                return  false;
             }
             $data = $grades->mapWithKeys(function ($grade) {
                 return [
